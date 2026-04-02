@@ -1,6 +1,7 @@
 package com.wedd0031.flinders.zootreasurehunt
 
 import kotlinx.serialization.Serializable
+import okio.Path
 import java.util.UUID
 
 @Serializable
@@ -9,5 +10,6 @@ data class Sighting(
     val isFound: Boolean = false,
     val notes: String = "",
     val id: String = UUID.randomUUID().toString(),
-    val imageUrl: String = "https://wilk0077.github.io/comp2012-images/assets-sm/african-lion-ai.jpg"
+    val imageUrl: String = "https://wilk0077.github.io/comp2012-images/assets-sm/african-lion-ai.jpg",
+    val photoPath: String? = null,
 )

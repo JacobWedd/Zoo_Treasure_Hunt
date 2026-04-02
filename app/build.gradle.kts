@@ -72,4 +72,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.viewmodel.compose)
+    implementation(libs.androidx.data.store.preferences)
 }
