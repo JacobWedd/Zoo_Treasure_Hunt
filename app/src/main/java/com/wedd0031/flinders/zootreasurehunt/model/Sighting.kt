@@ -1,7 +1,6 @@
-package com.wedd0031.flinders.zootreasurehunt
+package com.wedd0031.flinders.zootreasurehunt.model
 
 import kotlinx.serialization.Serializable
-import okio.Path
 import java.util.UUID
 
 @Serializable

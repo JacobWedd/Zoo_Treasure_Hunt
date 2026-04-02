@@ -3,7 +3,7 @@ package com.wedd0031.flinders.zootreasurehunt.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.work.WorkManager
-import com.wedd0031.flinders.zootreasurehunt.Sighting
+import com.wedd0031.flinders.zootreasurehunt.model.Sighting
 import com.wedd0031.flinders.zootreasurehunt.data.SightingRepository
 import com.wedd0031.flinders.zootreasurehunt.data.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,18 +15,21 @@ import androidx.work.workDataOf
 import com.wedd0031.flinders.zootreasurehunt.worker.CongratulationWorker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.combine
+import com.wedd0031.flinders.zootreasurehunt.model.ZooUiState
 
 
 
-class ZooViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = SightingRepository(application)
-    private val settingsRepository = SettingsRepository(application)
+class ZooViewModel(
+    application: Application,
+    private val repository: SightingRepository,
+    private val settingsRepository: SettingsRepository) : AndroidViewModel(application) {
     private val workManager = WorkManager.getInstance(application)
 
     private val _sightings = MutableStateFlow<List<Sighting>>(emptyList())
+    private val _uiState = MutableStateFlow(ZooUiState())
     private val _rawSightings = MutableStateFlow<List<Sighting>>(emptyList())
     val sightings: StateFlow<List<Sighting>> = _sightings.asStateFlow()
+    val uiState: StateFlow<ZooUiState> = _uiState.asStateFlow()
     val isSortByName = settingsRepository.sortByNameFlow
 
     init {
@@ -36,13 +39,15 @@ class ZooViewModel(application: Application) : AndroidViewModel(application) {
 
         viewModelScope.launch {
             combine(_rawSightings, settingsRepository.sortByNameFlow) { list, sortByName ->
-                if (sortByName) {
+                val sortedList = if (sortByName) {
                     list.sortedBy { it.name }
                 } else {
                     list.sortedByDescending { it.isFound }
                 }
-            }.collect { sortedList ->
-                _sightings.value = sortedList
+                _uiState.value.copy(sightings = sortedList, isSortByName = sortByName)
+            }.collect { newState ->
+                _uiState.value = newState
+                _sightings.value = newState.sightings
             }
         }
     }
@@ -80,5 +85,19 @@ class ZooViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             settingsRepository.setSortByName(sortByName)
         }
+    }
+
+    fun selectSightingForEdit(sighting: Sighting?) {
+        _uiState.value = _uiState.value.copy(
+            selectedSighting = sighting,
+            isDialogVisible = sighting != null
+        )
+    }
+
+    fun dismissDialog() {
+        _uiState.value = _uiState.value.copy(
+            selectedSighting = null,
+            isDialogVisible = false
+        )
     }
 }
