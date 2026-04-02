@@ -1,4 +1,4 @@
-package com.wedd0031.flinders.zootreasurehunt
+package com.wedd0031.flinders.zootreasurehunt.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.AnchoredDraggableState
@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.wedd0031.flinders.zootreasurehunt.ui.components.AnimalCard
+import com.wedd0031.flinders.zootreasurehunt.model.Sighting
 import kotlin.math.roundToInt
 
 enum class DragAnchors {

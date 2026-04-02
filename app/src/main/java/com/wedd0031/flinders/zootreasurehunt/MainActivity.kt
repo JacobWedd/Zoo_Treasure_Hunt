@@ -1,5 +1,7 @@
 package com.wedd0031.flinders.zootreasurehunt
 
+import android.Manifest
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -29,9 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,42 +50,73 @@ import coil3.compose.AsyncImage
 import com.wedd0031.flinders.zootreasurehunt.ui.theme.ZooTreasureHuntTheme
 import com.wedd0031.flinders.zootreasurehunt.viewmodel.ZooViewModel
 import android.net.Uri
+import android.os.Build
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.wedd0031.flinders.zootreasurehunt.navigation.AboutDestination
+import com.wedd0031.flinders.zootreasurehunt.navigation.BottomNavItem
+import com.wedd0031.flinders.zootreasurehunt.navigation.HomeDestination
+import com.wedd0031.flinders.zootreasurehunt.navigation.SettingsDestination
+import com.wedd0031.flinders.zootreasurehunt.ui.screens.SettingsScreen
 import com.wedd0031.flinders.zootreasurehunt.utils.FileUtils
+import com.wedd0031.flinders.zootreasurehunt.ui.components.EditSightingDialog
+import com.wedd0031.flinders.zootreasurehunt.ui.screens.ListScreen
+import com.wedd0031.flinders.zootreasurehunt.ui.screens.AboutScreen
+import com.wedd0031.flinders.zootreasurehunt.data.FileSightingRepository
+import com.wedd0031.flinders.zootreasurehunt.data.SettingsRepository
+import com.wedd0031.flinders.zootreasurehunt.data.SightingRepository
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val sightingRepository: SightingRepository = FileSightingRepository(this)
+        val settingsRepository = SettingsRepository(this)
         setContent {
             MaterialTheme {
-                ZooApp()
+                ZooApp(
+                    sightingRepository = sightingRepository,
+                    settingsRepository = settingsRepository
+                )
             }
         }
     }
 }
 
 @Composable
-fun ZooApp() {
-    val viewModel: ZooViewModel = viewModel()
+fun ZooApp(
+    sightingRepository: SightingRepository,
+    settingsRepository: SettingsRepository
+) {
+    val context = LocalContext.current
     val navController = rememberNavController()
+    val viewModel: ZooViewModel = viewModel(
+        factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return ZooViewModel(
+                    repository = sightingRepository,
+                    settingsRepository = settingsRepository,
+                    application = context.applicationContext as Application
+                ) as T
+            }
+        }
+    )
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { }
     )
 
-    val sightings by viewModel.sightings.collectAsState()
-    val isSortByName by viewModel.isSortByName.collectAsState(initial = true)
+    val uiState by viewModel.uiState.collectAsState()
+
+
 
     LaunchedEffect(Unit) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            permissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
-
-    var selectedSighting by remember { mutableStateOf<Sighting?>(null) }
-    var showDialog by remember { mutableStateOf(false) }
 
     val bottomItems = listOf(BottomNavItem.Home, BottomNavItem.Settings, BottomNavItem.About)
 
@@ -120,10 +151,9 @@ fun ZooApp() {
             ) {
                 composable<HomeDestination> {
                     ListScreen(
-                        sightings = sightings,
+                        sightings = uiState.sightings,
                         onEditClick = { animal ->
-                            selectedSighting = animal
-                            showDialog = true
+                            viewModel.selectSightingForEdit(animal)
                         },
                         onDelete = { animal ->
                             viewModel.deleteSighting(animal)
@@ -132,7 +162,7 @@ fun ZooApp() {
                 }
                 composable<SettingsDestination> {
                     SettingsScreen(
-                        isSortByName = isSortByName,
+                        isSortByName = uiState.isSortByName,
                         onSortChange = { viewModel.toggleSortOrder(it) }
                     )
                 }
@@ -140,14 +170,14 @@ fun ZooApp() {
                     AboutScreen()
                 }
             }
-            if (showDialog) {
-                selectedSighting?.let { sighting ->
+            if (uiState.isDialogVisible) {
+                uiState.selectedSighting?.let { sighting ->
                     EditSightingDialog(
                         sighting = sighting,
-                        onDismiss = { showDialog = false },
+                        onDismiss = { viewModel.dismissDialog() },
                         onSave = { updated ->
                             viewModel.updateSighting(updated)
-                            showDialog = false
+                            viewModel.dismissDialog()
                         }
                     )
                     }
@@ -155,142 +185,16 @@ fun ZooApp() {
         }
     }
 
-@Composable
-fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
-
-    val cardColor = if (sighting.isFound) Color(0xFFE8F5E9) else Color(0xFFF5F5F5)
-    val textColor = if (sighting.isFound) Color(0xFF2E7D32) else Color.Black
-    val imageModel = sighting.photoPath ?: "https://wilk0077.github.io/comp2012-images/assets-sm/african-lion-ai.jpg"
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(containerColor = cardColor)
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = imageModel,
-                contentDescription = sighting.name,
-                modifier = Modifier
-                    .size(64.dp)
-                    .padding(end = 8.dp)
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = sighting.name,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = textColor
-                )
-                if (sighting.isFound && sighting.notes.isNotEmpty()) {
-                    Text(
-                        text = sighting.notes,
-                        fontSize = 14.sp,
-                        color = Color.Gray
-                    )
-                }
-            }
-            if (sighting.isFound) {
-                Text(
-                    text = stringResource(R.string.found_label),
-                    fontWeight = FontWeight.Bold,
-                    color = textColor,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun EditSightingDialog(sighting: Sighting, onDismiss: () -> Unit, onSave: (Sighting) -> Unit) {
-    var notesText by remember { mutableStateOf(sighting.notes) }
-    var isFoundChecked by remember { mutableStateOf(sighting.isFound) }
-
-    val context = LocalContext.current
-    val fileUtils = remember { FileUtils(context) }
-    var currentPhotoPath by remember { mutableStateOf(sighting.photoPath) }
-    var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
-
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture()
-    ) { success ->
-        if (success && tempPhotoUri != null) {
-            currentPhotoPath = tempPhotoUri.toString()
-        }
-    }
 
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(id = R.string.edit_animal)) },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = notesText,
-                    onValueChange = { notesText = it },
-                    label = { Text(stringResource(id = R.string.notes_hint)) }
-                )
-                Row(
-                    modifier = Modifier.padding(top = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = isFoundChecked,
-                        onCheckedChange = { isFoundChecked = it }
-                    )
-                    Text(text = stringResource(id = R.string.checkbox_found))
-                }
-                Button(
-                    onClick = {
-                        val file = fileUtils.createImageFile()
-                        val uri = fileUtils.getUriForFile(file)
-                        tempPhotoUri = uri
-                        cameraLauncher.launch(uri)
-                    },
-                    modifier = Modifier.padding(top = 16.dp)
-                ) {
-                    Text(
-                        text = if (currentPhotoPath == null) "Take Photo" else "Retake Photo"
-                    )
-                }
-                if (currentPhotoPath != null) {
-                    Text(
-                        text = "Photo attached!",
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-            }
-        },
-        confirmButton = {
-            Button(onClick = {
-                onSave(
-                    sighting.copy(
-                        isFound = isFoundChecked,
-                        notes = notesText,
-                        photoPath = currentPhotoPath
-                    )
-                )
-            }) {
-                Text(text = stringResource(id = R.string.save_btn))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = R.string.cancel_btn))
-            }
-        }
-    ) // End of AlertDialog
-} // End of EditSightingDialog
-
-
+/*
 @Preview(showBackground = true)
 @Composable
 fun ZooAppPreview() {
     ZooTreasureHuntTheme {
-        ZooApp()
+        ZooApp(
+            sightingRepository = TODO(),
+            settingsRepository = TODO()
+        )
     }
-}
+} */
