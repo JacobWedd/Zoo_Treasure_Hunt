@@ -66,42 +66,25 @@ import com.wedd0031.flinders.zootreasurehunt.ui.screens.AboutScreen
 import com.wedd0031.flinders.zootreasurehunt.data.FileSightingRepository
 import com.wedd0031.flinders.zootreasurehunt.data.SettingsRepository
 import com.wedd0031.flinders.zootreasurehunt.data.SightingRepository
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val sightingRepository: SightingRepository = FileSightingRepository(this)
-        val settingsRepository = SettingsRepository(this)
         setContent {
             MaterialTheme {
-                ZooApp(
-                    sightingRepository = sightingRepository,
-                    settingsRepository = settingsRepository
-                )
+                ZooApp()
             }
         }
     }
 }
 
 @Composable
-fun ZooApp(
-    sightingRepository: SightingRepository,
-    settingsRepository: SettingsRepository
-) {
-    val context = LocalContext.current
+fun ZooApp() {
     val navController = rememberNavController()
-    val viewModel: ZooViewModel = viewModel(
-        factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ZooViewModel(
-                    repository = sightingRepository,
-                    settingsRepository = settingsRepository,
-                    application = context.applicationContext as Application
-                ) as T
-            }
-        }
-    )
+    val viewModel: ZooViewModel = viewModel()
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),

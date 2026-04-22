@@ -2,12 +2,16 @@ package com.wedd0031.flinders.zootreasurehunt.data
 
 import android.content.Context
 import com.wedd0031.flinders.zootreasurehunt.model.Sighting
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.File
+import javax.inject.Inject
 
-class FileSightingRepository(private val context: Context) : SightingRepository {
+class FileSightingRepository @Inject constructor (
+    @ApplicationContext private val context: Context
+) : SightingRepository {
 
     private val fileName = "sightings.json"
 

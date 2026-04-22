@@ -2,15 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
     namespace = "com.wedd0031.flinders.zootreasurehunt"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.wedd0031.flinders.zootreasurehunt"
@@ -74,4 +72,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.data.store.preferences)
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }

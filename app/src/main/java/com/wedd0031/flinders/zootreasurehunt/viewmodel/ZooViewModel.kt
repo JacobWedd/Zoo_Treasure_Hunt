@@ -16,13 +16,15 @@ import com.wedd0031.flinders.zootreasurehunt.worker.CongratulationWorker
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.combine
 import com.wedd0031.flinders.zootreasurehunt.model.ZooUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-
-class ZooViewModel(
+@HiltViewModel
+class ZooViewModel @Inject constructor(
     application: Application,
     private val repository: SightingRepository,
-    private val settingsRepository: SettingsRepository) : AndroidViewModel(application) {
+    private val settingsRepository: SettingsRepository
+) : AndroidViewModel(application) {
     private val workManager = WorkManager.getInstance(application)
 
     private val _sightings = MutableStateFlow<List<Sighting>>(emptyList())
