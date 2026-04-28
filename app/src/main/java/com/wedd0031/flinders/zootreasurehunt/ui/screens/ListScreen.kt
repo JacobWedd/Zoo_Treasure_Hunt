@@ -1,11 +1,15 @@
 package com.wedd0031.flinders.zootreasurehunt.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +24,7 @@ import com.wedd0031.flinders.zootreasurehunt.ui.components.SwipeableSighting
 
 @Composable
 fun ListScreen(
+    onMenuClick: () -> Unit,
     sightings: List<Sighting>,
     onEditClick: (Sighting) -> Unit,
     onDelete: (Sighting) -> Unit,
@@ -34,12 +39,22 @@ fun ListScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                fontSize = 28.sp,
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(bottom = 24.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp, bottom = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Button(onClick = onMenuClick) {
+                    Text(stringResource(R.string.menu_btn))
+                }
+                Text(
+                    text = stringResource(R.string.app_name),
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
         }
         items(
             items = sightings,

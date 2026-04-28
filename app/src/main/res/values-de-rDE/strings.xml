@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Schatzsuche im Zoo</string>
+    <string name="found_label">GEFUNDEN!</string>
+    <string name="edit_animal">Sichtung bearbeiten</string>
+    <string name="notes_hint">Beobachtungsnotizen</string>
+    <string name="checkbox_found">Als gefunden markieren</string>
+    <string name="save_btn">Speichern</string>
+    <string name="cancel_btn">Stornieren</string>
+    <string name="lion_name">Löwe</string>
+    <string name="redpanda_name">Roter Panda</string>
+    <string name="giraffe_name">Giraffe</string>
+    <string name="kangaroo_name">Känguru</string>
+    <string name="penguin_name">Pinguin</string>
+    <string name="photo_btn">Foto machen</string>
+    <string name="home_btn">Heim</string>
+    <string name="settings_btn">Einstellungen</string>
+    <string name="about_btn">Um</string>
+    <string name="sortbyname_btn">Nach Namen sortieren</string>
+    <string name="sortbyfound_btn">Sortieren nach Noch zu finden</string>
+    <string name="sort_label">Sortierung</string>
+    <string name="about_page_label">Schatzsuche im Zoo \nErstellt von\n WEDD0031</string>
+    <string name="notification_title">Super gemacht!</string>
+    <string name="notification_text">Du hast die %1$s gefunden!</string>
+    <string name="attached_label">Foto beigefügt!</string>
+    <string name="retake_photo_btn">Foto erneut aufnehmen</string>
+    <string name="language_change_label">Sprache geändert!</string>
+    <string name="reopen_app_label">Die Anwendung wird neu gestartet, um den Sprachwechsel abzuschließen. Bitte klicken Sie auf „Jetzt neu starten“.</string>
+    <string name="restart_btn">Jetzt neu starten</string>
+    <string name="dark_mode_label">Dunkelmodus</string>
+</resources>
