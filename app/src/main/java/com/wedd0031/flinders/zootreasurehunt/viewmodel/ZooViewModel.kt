@@ -55,14 +55,6 @@ class ZooViewModel @Inject constructor(
         }
     }
 
-
-    private fun updateAndSave(newList: List<Sighting>) {
-        _rawSightings.value = newList
-        viewModelScope.launch {
-            repository.saveSightings(newList)
-        }
-    }
-
     fun updateSighting(updated: Sighting) {
         val oldSighting = _rawSightings.value.find { it.id == updated.id }
 
@@ -81,12 +73,18 @@ class ZooViewModel @Inject constructor(
             if (it.id == updated.id) updatedWithTimestamp else it
         }
 
-        updateAndSave(newList)
+        _rawSightings.value = newList
+        viewModelScope.launch {
+            repository.updateSighting(updatedWithTimestamp)
+        }
     }
 
     fun deleteSighting(sighting: Sighting) {
         val newList = _rawSightings.value.filter { it.id != sighting.id }
-        updateAndSave(newList)
+        _rawSightings.value = newList
+        viewModelScope.launch {
+            repository.deleteSighting(sighting)
+        }
     }
     fun toggleSortOrder(sortByName: Boolean) {
         viewModelScope.launch {

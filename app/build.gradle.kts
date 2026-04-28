@@ -73,5 +73,9 @@ dependencies {
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.data.store.preferences)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
+
 }
