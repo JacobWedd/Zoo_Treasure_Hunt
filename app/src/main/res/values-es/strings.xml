@@ -28,4 +28,10 @@
     <string name="reopen_app_label">La aplicación se reiniciará para completar el cambio de idioma. Pulse Reiniciar ahora.</string>
     <string name="restart_btn">Reiniciar ahora</string>
     <string name="dark_mode_label">Modo oscuro</string>
+    <string name="menu_btn">Menú</string>
+    <string name="statistics_btn">Estadística</string>
+    <string name="total_animals_label">Animales totales</string>
+    <string name="found_animals_label">Animales encontrados</string>
+    <string name="remaining_animals_label">Animales restantes</string>
+    <string name="delete_btn">Borrar</string>
 </resources>

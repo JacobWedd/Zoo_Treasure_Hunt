@@ -28,4 +28,10 @@
     <string name="reopen_app_label">Die Anwendung wird neu gestartet, um den Sprachwechsel abzuschließen. Bitte klicken Sie auf „Jetzt neu starten“.</string>
     <string name="restart_btn">Jetzt neu starten</string>
     <string name="dark_mode_label">Dunkelmodus</string>
+    <string name="menu_btn">Speisekarte</string>
+    <string name="statistics_btn">Statistiken</string>
+    <string name="total_animals_label">Gesamtzahl der Tiere</string>
+    <string name="found_animals_label">Gefundene Tiere</string>
+    <string name="remaining_animals_label">Verbleibende Tiere</string>
+    <string name="delete_btn">Löschen</string>
 </resources>

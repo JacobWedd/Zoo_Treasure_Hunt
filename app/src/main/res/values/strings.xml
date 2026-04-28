@@ -29,7 +29,8 @@
     <string name="dark_mode_label">Dark Mode</string>
     <string name="menu_btn">Menu</string>
     <string name="statistics_btn">Statistics</string>
-    <string name="total_animals_label">Total animals</string>
-    <string name="found_animals_label">Found animals</string>
-    <string name="remaining_animals_label">Remaining animals</string>
+    <string name="total_animals_label">Total Animals</string>
+    <string name="found_animals_label">Found Animals</string>
+    <string name="remaining_animals_label">Remaining Animals</string>
+    <string name="delete_btn">Delete</string>
 </resources>

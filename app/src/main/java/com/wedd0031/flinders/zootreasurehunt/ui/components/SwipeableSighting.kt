@@ -20,8 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.wedd0031.flinders.zootreasurehunt.R
 import com.wedd0031.flinders.zootreasurehunt.ui.components.AnimalCard
 import com.wedd0031.flinders.zootreasurehunt.model.Sighting
 import kotlin.math.roundToInt
@@ -70,7 +72,7 @@ fun SwipeableSighting(
             contentAlignment = Alignment.CenterStart,
         ) {
             Text(
-                text = "Delete",
+                text = stringResource(R.string.delete_btn),
                 color = Color.White,
                 modifier = Modifier.padding(start = 16.dp)
             )
