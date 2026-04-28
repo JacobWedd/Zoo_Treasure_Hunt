@@ -32,6 +32,22 @@ import java.util.Date
 
 @Composable
 fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
+    val displayName = when (sighting.animalKey) {
+        "lion" -> stringResource(R.string.lion_name)
+        "red_panda" -> stringResource(R.string.redpanda_name)
+        "giraffe" -> stringResource(R.string.giraffe_name)
+        "kangaroo" -> stringResource(R.string.kangaroo_name)
+        "penguin" -> stringResource(R.string.penguin_name)
+        else -> sighting.name
+    }
+    val defaultImageUrl = when (sighting.animalKey) {
+        "lion" -> "https://wilk0077.github.io/comp2012-images/assets-sm/african-lion-ai.jpg"
+        "red_panda" -> "https://wilk0077.github.io/comp2012-images/assets-sm/red-panda-ai.jpg"
+        "giraffe" -> "https://wilk0077.github.io/comp2012-images/assets-sm/giraffe-ai.jpg"
+        "kangaroo" -> "https://wilk0077.github.io/comp2012-images/assets-sm/red-kangaroo-ai.jpg"
+        "penguin" -> "https://wilk0077.github.io/comp2012-images/assets-sm/penguin-ai.jpg"
+        else -> sighting.imageUrl
+    }
 
     val cardColor by animateColorAsState(
         targetValue = if (sighting.isFound) Color(0xFFC8E6C9) else Color(0xFFF5F5F5),
@@ -40,7 +56,9 @@ fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
     )
 
     val textColor = if (sighting.isFound) Color(0xFF2E7D32) else Color.Black
-    val imageModel = sighting.photoPath ?: sighting.imageUrl
+    val imageModel = sighting.photoPath?.takeIf { it.isNotBlank() }
+        ?: sighting.imageUrl.takeIf { it.isNotBlank() }
+        ?: defaultImageUrl
 
 
     val cardElevation by androidx.compose.animation.core.animateDpAsState(
@@ -71,14 +89,14 @@ fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
         ) {
             AsyncImage(
                 model = imageModel,
-                contentDescription = sighting.name,
+                contentDescription = displayName,
                 modifier = Modifier
                     .size(64.dp)
                     .padding(end = 8.dp)
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = sighting.name,
+                    text = displayName,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = textColor
