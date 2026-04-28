@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.wedd0031.flinders.zootreasurehunt.R
 
 
 class CongratulationWorker(
@@ -32,8 +33,8 @@ class CongratulationWorker(
         }
         val builder = androidx.core.app.NotificationCompat.Builder(applicationContext, channelId)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("Great Job!")
-            .setContentText("You found the $animalName!")
+            .setContentTitle(applicationContext.getString(R.string.notification_title))
+            .setContentText(applicationContext.getString(R.string.notification_text, animalName))
             .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
             .setDefaults(androidx.core.app.NotificationCompat.DEFAULT_ALL)
             .setAutoCancel(true)

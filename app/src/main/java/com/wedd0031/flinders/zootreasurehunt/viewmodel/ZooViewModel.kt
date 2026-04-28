@@ -33,6 +33,7 @@ class ZooViewModel @Inject constructor(
     val sightings: StateFlow<List<Sighting>> = _sightings.asStateFlow()
     val uiState: StateFlow<ZooUiState> = _uiState.asStateFlow()
     val isSortByName = settingsRepository.sortByNameFlow
+    val isDarkMode = settingsRepository.darkModeFlow
 
     init {
         viewModelScope.launch {
@@ -44,7 +45,7 @@ class ZooViewModel @Inject constructor(
                 val sortedList = if (sortByName) {
                     list.sortedBy { it.name }
                 } else {
-                    list.sortedByDescending { it.isFound }
+                    list.sortedBy { it.isFound } //Found animals set to bottom of list+ for easier view of remaining animals to find.
                 }
                 _uiState.value.copy(sightings = sortedList, isSortByName = sortByName)
             }.collect { newState ->
@@ -64,19 +65,23 @@ class ZooViewModel @Inject constructor(
 
     fun updateSighting(updated: Sighting) {
         val oldSighting = _rawSightings.value.find { it.id == updated.id }
-        if (updated.isFound && oldSighting?.isFound == false) {
+
+        val updatedWithTimestamp = if (updated.isFound && oldSighting?.isFound == false) {
             val workRequest = OneTimeWorkRequestBuilder<CongratulationWorker>()
                 .setInputData(workDataOf("ANIMAL_NAME" to updated.name))
                 .build()
 
             workManager.enqueue(workRequest)
-
+            updated.copy(timestamp = System.currentTimeMillis())
+        } else {
+            updated.copy(timestamp = oldSighting?.timestamp ?: updated.timestamp)
         }
 
-        val newList = _rawSightings.value.map { if (it.id == updated.id) updated else it }
+        val newList = _rawSightings.value.map {
+            if (it.id == updated.id) updatedWithTimestamp else it
+        }
 
         updateAndSave(newList)
-
     }
 
     fun deleteSighting(sighting: Sighting) {
@@ -86,6 +91,12 @@ class ZooViewModel @Inject constructor(
     fun toggleSortOrder(sortByName: Boolean) {
         viewModelScope.launch {
             settingsRepository.setSortByName(sortByName)
+        }
+    }
+
+    fun toggleDarkMode(isDarkMode: Boolean) {
+        viewModelScope.launch {
+            settingsRepository.setDarkMode(isDarkMode)
         }
     }
 

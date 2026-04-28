@@ -76,12 +76,12 @@ fun EditSightingDialog(sighting: Sighting, onDismiss: () -> Unit, onSave: (Sight
                     modifier = Modifier.padding(top = 16.dp)
                 ) {
                     Text(
-                        text = if (currentPhotoPath == null) "Take Photo" else "Retake Photo"
+                        text = if (currentPhotoPath == null) stringResource(R.string.photo_btn) else stringResource(R.string.retake_photo_btn)
                     )
                 }
                 if (currentPhotoPath != null) {
                     Text(
-                        text = "Photo attached!",
+                        text = stringResource(R.string.attached_label),
                         modifier = Modifier.padding(top = 8.dp)
                     )
                 }

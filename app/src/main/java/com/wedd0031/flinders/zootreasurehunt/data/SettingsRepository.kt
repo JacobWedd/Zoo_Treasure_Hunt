@@ -18,12 +18,20 @@ class SettingsRepository @Inject constructor(
 ) {
     companion object {
         val SORT_BY_NAME = booleanPreferencesKey("sort_by_name")
+        val DARK_MODE = booleanPreferencesKey("dark_mode")
     }
 
     val sortByNameFlow: Flow<Boolean> = context.dataStore.data
         .map { preferences -> preferences[SORT_BY_NAME] ?: true }
 
+    val darkModeFlow: Flow<Boolean> = context.dataStore.data
+        .map { preferences -> preferences[DARK_MODE] ?: false }
+
     suspend fun setSortByName(isSortByName: Boolean) {
         context.dataStore.edit { it[SORT_BY_NAME] = isSortByName }
+    }
+
+    suspend fun setDarkMode(isDarkMode: Boolean) {
+        context.dataStore.edit { it[DARK_MODE] = isDarkMode }
     }
 }

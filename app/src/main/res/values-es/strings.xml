@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Búsqueda del tesoro en el zoológico</string>
+    <string name="found_label">¡ENCONTRÓ!</string>
+    <string name="edit_animal">Editar avistamiento</string>
+    <string name="notes_hint">Notas de observación</string>
+    <string name="checkbox_found">Marcar como encontrado</string>
+    <string name="save_btn">Ahorrar</string>
+    <string name="cancel_btn">Cancelar</string>
+    <string name="lion_name">León</string>
+    <string name="redpanda_name">Panda rojo</string>
+    <string name="giraffe_name">Jirafa</string>
+    <string name="kangaroo_name">Canguro</string>
+    <string name="penguin_name">Pingüino</string>
+    <string name="photo_btn">Tomar foto</string>
+    <string name="home_btn">Hogar</string>
+    <string name="settings_btn">Ajustes</string>
+    <string name="about_btn">Acerca de</string>
+    <string name="sortbyname_btn">Ordenar por nombre</string>
+    <string name="sortbyfound_btn">Ordenar por Aún por encontrar</string>
+    <string name="sort_label">Orden de clasificación</string>
+    <string name="about_page_label">Búsqueda del tesoro en el zoológico \nCreado por\n WEDD0031</string>
+    <string name="notification_title">¡Buen trabajo!</string>
+    <string name="notification_text">¡Encontraste los %1$s!</string>
+    <string name="attached_label">¡Foto adjunta!</string>
+    <string name="retake_photo_btn">Repetir la foto</string>
+    <string name="language_change_label">¡Idioma cambiado!</string>
+    <string name="reopen_app_label">La aplicación se reiniciará para completar el cambio de idioma. Pulse Reiniciar ahora.</string>
+    <string name="restart_btn">Reiniciar ahora</string>
+    <string name="dark_mode_label">Modo oscuro</string>
+    <string name="menu_btn">Menú</string>
+    <string name="statistics_btn">Estadística</string>
+    <string name="total_animals_label">Animales totales</string>
+    <string name="found_animals_label">Animales encontrados</string>
+    <string name="remaining_animals_label">Animales restantes</string>
+    <string name="delete_btn">Borrar</string>
+</resources>
