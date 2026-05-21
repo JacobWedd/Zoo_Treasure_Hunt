@@ -12,6 +12,7 @@
     <string name="giraffe_name">Jirafa</string>
     <string name="kangaroo_name">Canguro</string>
     <string name="penguin_name">Pingüino</string>
+    <string name="common_brushtail_possum_name">Possum</string>
     <string name="photo_btn">Tomar foto</string>
     <string name="home_btn">Hogar</string>
     <string name="settings_btn">Ajustes</string>

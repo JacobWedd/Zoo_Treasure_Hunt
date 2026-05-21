@@ -38,6 +38,7 @@ fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
         "giraffe" -> stringResource(R.string.giraffe_name)
         "kangaroo" -> stringResource(R.string.kangaroo_name)
         "penguin" -> stringResource(R.string.penguin_name)
+        "common_brushtail_possum" -> stringResource(R.string.common_brushtail_possum_name)
         else -> sighting.name
     }
     val defaultImageUrl = when (sighting.animalKey) {
@@ -46,6 +47,7 @@ fun AnimalCard(sighting: Sighting, onClick: () -> Unit) {
         "giraffe" -> "https://wilk0077.github.io/comp2012-images/assets-sm/giraffe-ai.jpg"
         "kangaroo" -> "https://wilk0077.github.io/comp2012-images/assets-sm/red-kangaroo-ai.jpg"
         "penguin" -> "https://wilk0077.github.io/comp2012-images/assets-sm/penguin-ai.jpg"
+        "common_brushtail_possum" -> "https://images.unsplash.com/photo-1720188490664-bea933e5aa7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzc5Mjk0ODAxfA&ixlib=rb-4.1.0&q=80&w=400"
         else -> sighting.imageUrl
     }
 

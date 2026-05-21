@@ -64,7 +64,6 @@ fun SwipeableSighting(
                 )
             }
     ) {
-        // Background Layer (Red Delete)
         Box(
             modifier = Modifier
                 .matchParentSize()

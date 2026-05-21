@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.wedd0031.flinders.zootreasurehunt.R
 import com.wedd0031.flinders.zootreasurehunt.model.Sighting
 import com.wedd0031.flinders.zootreasurehunt.ui.components.SwipeableSighting
+import com.wedd0031.flinders.zootreasurehunt.ui.components.ZooSpeedCheck
 
 @Composable
 fun ListScreen(
@@ -30,6 +30,8 @@ fun ListScreen(
     onDelete: (Sighting) -> Unit,
 ) {
     val listState = rememberLazyListState()
+    ZooSpeedCheck()
+
     LazyColumn(
         state = listState,
         modifier = Modifier

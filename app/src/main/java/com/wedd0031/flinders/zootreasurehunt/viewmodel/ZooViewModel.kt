@@ -45,7 +45,7 @@ class ZooViewModel @Inject constructor(
                 val sortedList = if (sortByName) {
                     list.sortedBy { it.name }
                 } else {
-                    list.sortedBy { it.isFound } //Found animals set to bottom of list+ for easier view of remaining animals to find.
+                    list.sortedBy { it.isFound }
                 }
                 _uiState.value.copy(sightings = sortedList, isSortByName = sortByName)
             }.collect { newState ->

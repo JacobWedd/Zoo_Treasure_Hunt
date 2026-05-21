@@ -17,10 +17,11 @@ class RoomSightingRepository @Inject constructor(
         if (savedSightings.isEmpty()) {
             val defaults = getDefaultSightings()
             sightingDao.insertSightings(defaults.map { it.toEntity() })
+            markPossumDefaultChecked()
             return defaults
         }
 
-        return localiseSightings(savedSightings.map { it.toSighting() })
+        return localiseSightings(addPossumIfNeeded(savedSightings.map { it.toSighting() }))
     }
 
     override suspend fun saveSightings(sightings: List<Sighting>) {
@@ -46,6 +47,7 @@ class RoomSightingRepository @Inject constructor(
             "giraffe" -> context.getString(R.string.giraffe_name)
             "kangaroo" -> context.getString(R.string.kangaroo_name)
             "penguin" -> context.getString(R.string.penguin_name)
+            "common_brushtail_possum" -> context.getString(R.string.common_brushtail_possum_name)
             else -> animalKey
         }
     }
@@ -72,8 +74,36 @@ class RoomSightingRepository @Inject constructor(
             "giraffe" -> "https://wilk0077.github.io/comp2012-images/assets-sm/giraffe-ai.jpg"
             "kangaroo" -> "https://wilk0077.github.io/comp2012-images/assets-sm/red-kangaroo-ai.jpg"
             "penguin" -> "https://wilk0077.github.io/comp2012-images/assets-sm/penguin-ai.jpg"
+            "common_brushtail_possum" -> "https://images.unsplash.com/photo-1720188490664-bea933e5aa7c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzc5Mjk0ODAxfA&ixlib=rb-4.1.0&q=80&w=400"
             else -> ""
         }
+    }
+
+    private suspend fun addPossumIfNeeded(savedSightings: List<Sighting>): List<Sighting> {
+        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val possumKey = "common_brushtail_possum"
+        val possumHasAlreadyBeenChecked = prefs.getBoolean("possum_default_checked", false)
+        val listAlreadyHasPossum = savedSightings.any { it.animalKey == possumKey }
+
+        if (listAlreadyHasPossum || possumHasAlreadyBeenChecked) {
+            if (listAlreadyHasPossum && !possumHasAlreadyBeenChecked) {
+                markPossumDefaultChecked()
+            }
+            return savedSightings
+        }
+
+        val possum = getDefaultSightings().first { it.animalKey == possumKey }
+        sightingDao.insertSightings(listOf(possum.toEntity()))
+        markPossumDefaultChecked()
+
+        return savedSightings + possum
+    }
+
+    private fun markPossumDefaultChecked() {
+        context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean("possum_default_checked", true)
+            .apply()
     }
 
     private fun getDefaultSightings(): List<Sighting> {
@@ -102,6 +132,11 @@ class RoomSightingRepository @Inject constructor(
                 name = context.getString(R.string.penguin_name),
                 animalKey = "penguin",
                 imageUrl = getAnimalImageUrl("penguin")
+            ),
+            Sighting(
+                name = context.getString(R.string.common_brushtail_possum_name),
+                animalKey = "common_brushtail_possum",
+                imageUrl = getAnimalImageUrl("common_brushtail_possum")
             )
         )
     }

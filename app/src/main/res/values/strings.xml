@@ -11,6 +11,7 @@
     <string name="giraffe_name">Giraffe</string>
     <string name="kangaroo_name">Kangaroo</string>
     <string name="penguin_name">Penguin</string>
+    <string name="common_brushtail_possum_name">Possum</string>
     <string name="photo_btn">Take Photo</string>
     <string name="home_btn">Home</string>
     <string name="settings_btn">Settings</string>
@@ -23,6 +24,23 @@
     <string name="notification_text">You found the %1$s!</string>
     <string name="attached_label">Photo Attached!</string>
     <string name="retake_photo_btn">Retake Photo</string>
+    <string name="photo_verified_label">Photo verified. This animal will be marked as found.</string>
+    <string name="photo_required_label">Please take a photo before marking this animal as found.</string>
+    <string name="photo_failed_label">No photo was saved. Please try again.</string>
+    <string name="camera_permission_denied_label">Camera permission is needed to verify this sighting with a photo.</string>
+    <string name="photo_preview_description">Captured animal photo</string>
+    <string name="shy_animal_label">This animal likes quiet spaces, please ensure you keep your voice down!</string>
+    <string name="quiet_monitor_active_label">Quiet monitor active. Thanks for keeping your voice low.</string>
+    <string name="sound_level_quiet_label">Sound level: quiet</string>
+    <string name="sound_level_loud_label">Sound level: loud</string>
+    <string name="shy_animal_loud_warning">Shhh! You may be scaring the animals!</string>
+    <string name="microphone_permission_denied_label">Microphone permission is needed for the quiet zone warning.</string>
+    <string name="microphone_unavailable_label">Microphone is not available on this device.</string>
+    <string name="nocturnal_animal_message">This animal is nocturnal! Please be sure to keep phone brightness down and your flash off!</string>
+    <string name="nocturnal_mode_active_label">Nocturnal mode active! The display has switched to high contrast.</string>
+    <string name="nocturnal_mode_ready_label">Nocturnal mode ready! It will activate in low light.</string>
+    <string name="light_sensor_waiting_label">Checking light level...</string>
+    <string name="light_sensor_unavailable_label">Light sensor is not available on this device.</string>
     <string name="language_change_label">Language Changed!</string>
     <string name="reopen_app_label">Application will be restarted to complete language change. Please press Restart Now.</string>
     <string name="restart_btn">Restart Now</string>
@@ -33,4 +51,11 @@
     <string name="found_animals_label">Found Animals</string>
     <string name="remaining_animals_label">Remaining Animals</string>
     <string name="delete_btn">Delete</string>
+    <string name="yes_btn">Yes</string>
+    <string name="no_btn">No</string>
+    <string name="ok_btn">OK</string>
+    <string name="zoo_speed_check_title">ZooSpeedCheck</string>
+    <string name="zoo_speed_check_question">Whoa there! Are you even looking at the animals?</string>
+    <string name="zoo_speed_check_yes_reply">Good! But how about we slow down and admire them.</string>
+    <string name="zoo_speed_check_no_reply">Well why else are you at a zoo!</string>
 </resources>
